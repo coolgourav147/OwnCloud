@@ -1,0 +1,11 @@
+#! /usr/bin/python2
+
+import os
+
+os.system('yum install rdesktop -y')
+os.system('setenforce 0')
+os.system('iptables -F')
+os.system('rdesktop 192.168.0.29')
+
+os.system("sleep 2")
+import services.service

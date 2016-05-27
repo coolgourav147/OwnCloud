@@ -1,0 +1,7 @@
+#! /usr/bin/python2
+
+import os
+
+os.system('umount /media/jalCLOUD')
+os.system('rm -rvf /media/jalCLOUD')
+

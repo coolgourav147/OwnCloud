@@ -1,0 +1,19 @@
+#!/usr/bin/python2
+
+import  socket
+import os
+
+s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+s.bind(("",1110))
+
+
+data=s.recvfrom(100)[0]
+
+if data=="user":
+	import
+
+elif data=="services":
+	import  
+
+
+

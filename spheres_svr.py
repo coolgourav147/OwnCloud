@@ -1,0 +1,35 @@
+#! /usr/bin/python2
+
+import os
+import socket
+
+os.system("setenforce 0")
+os.system("iptables -F")
+
+s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+s.bind(("",9888))
+name=s.recvfrom(100)[0]
+print name
+size=s.recvfrom(100)[0]
+print size
+
+os.system("lvcreate --size "+size+"M --name "+name+" cloudvg")
+os.system("mkfs.ext4 /dev/cloudvg/"+name+"")
+#os.system("mkdir /media/"+name+"")
+#os.system("mount /dev/cloudvg/"+name+" /media/"+name+"")
+#os.system("cp /root/Desktop/server/exports  /etc/exports")
+#os.system("echo '/media/"+ name+"  *(rw,no_root_squash)' >>/etc/exports")
+
+
+os.system('service tgtd restart')
+os.system('setenforce 0')
+os.system('iptables -F')
+os.system('yum install scsi* -y')
+os.system('tgtadm --lld iscsi --mode target --op new --tid 1 --targetname mycloud')
+os.system('tgtadm --lld iscsi --mode target --op show')
+os.system("tgtadm --lld iscsi --mode logicalunit --op new --tid 1 --lun 1 --backing-store /dev/cloudvg/"+name+"")
+os.system('tgt-admin --dump >> /etc/tgt/targets.conf')
+os.system('tgtadm --lld iscsi --mode target --op show')
+
+os.system('service tgtd restart')
+

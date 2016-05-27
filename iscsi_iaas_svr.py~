@@ -1,0 +1,18 @@
+#! /usrbin/python2
+
+import os
+
+os.system('setenforce 0')
+os.system('iptables -F')
+
+os.system('tgtadm --lld iscsi --mode target --op new --tid 1 --targetname skycloud')
+os.system('tgtadm --lld iscsi --mode target --op  show')
+os.system('tgtadm --lld iscsi --mode logicalunit --op new --tid 1 --lun 1 --backing-store /dev/vgvg/clv')
+os.system('tgtadm --lld iscsi --mode target --op  show')
+os.system('tgt-admin --dump >> /etc/tgt/targets.conf')
+os.system('scp /etc/libvirt/qemu/rhel6.xml  192.168.0.13:/etc/libvirt/qemu')
+os.system('service tgtd restart')
+
+import server.svr
+
+

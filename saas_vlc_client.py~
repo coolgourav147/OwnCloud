@@ -1,0 +1,7 @@
+#! /usr/bin/python
+
+import os
+
+os.system("yum install openssh-server -y")
+os.system('ssh -X -l RAVI 192.168.0.2 vlc')
+

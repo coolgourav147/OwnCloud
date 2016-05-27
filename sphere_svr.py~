@@ -1,0 +1,24 @@
+#! /usr/bin/python2
+
+import os
+import socket
+
+os.system("setenforce 0")
+os.system("iptables -F")
+
+s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+s.bind(("",9558))
+name=s.recvfrom(100)[0]
+print name
+size=s.recvfrom(100)[0]
+print size
+
+os.system("lvcreate --size "+size+"M --name "+name+" ravi")
+os.system("mkfs.ext4 /dev/ravi/"+name+"")
+os.system("mkdir /media/"+name+"")
+os.system("mount /dev/ravi/"+name+" /media/"+name+"")
+os.system("cp /root/Desktop/server/exports  /etc/exports")
+os.system("echo '/media/"+ name+"  *(rw,no_root_squash)' >>/etc/exports")
+os.system("service nfs restart")
+
+s.close()

@@ -1,0 +1,39 @@
+#! /usr/bin/python2
+
+import os
+import socket
+
+os.system("setenforce 0")
+os.system("iptables -F")
+
+s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+s.bind(("",1138))
+
+ip="192.168.137.9"
+port=9558
+
+os.system('dialog --inputbox "ENTER NAME OF SPHERE"  20 35 2>/tmp/name_spheres.txt')
+
+f21=open("/tmp/name_spheres.txt")
+sp_name=f21.read()
+f21.close()
+
+s.sendto(sp_name,(ip,port))
+
+os.system('dialog --inputbox "ENTER SIZE OF SPHERE (Mb)"  20 35 2>/tmp/size_spheres.txt')
+
+f22=open("/tmp/size_spheres.txt","r")
+sp_size=f22.read()
+f22.close()
+
+s.sendto(sp_size,(ip,port))
+
+os.system("mkdir /media/"+ sp_name +"")
+os.system("sleep 10")
+os.system("mount 192.168.137.9:/media/""  /media/"+"")
+
+
+s.close()
+
+
+

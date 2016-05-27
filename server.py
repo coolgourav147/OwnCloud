@@ -1,0 +1,49 @@
+#!/usr/bin/python2
+
+import socket
+import os
+
+os.system("setenforce 0")
+os.system("iptables -F")
+
+def svr():
+
+	s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+	s.bind(("",8793))
+
+	data=s.recvfrom(100)[0]
+
+	if data=="login":
+		import user_login_svr
+		s.close()
+
+	elif data=="register":
+		import r_user_svr
+		s.close()
+
+	elif data=="cubes":
+		import cubes_svr
+		s.close()
+	
+	elif data=="spheres":
+		import  spheres_svr
+		s.close()
+
+	elif data=="rdp":
+		import rdp_svr
+		s.close()
+
+	elif data=="vnc":
+		import vnc_svr
+		s.close()
+
+	elif data=="nfs":
+		import nfs_iaas_svr
+		s.close()
+
+	elif data=="iscsi":
+		import iscsi_iaas_svr
+		s.close()
+
+	
+svr()
